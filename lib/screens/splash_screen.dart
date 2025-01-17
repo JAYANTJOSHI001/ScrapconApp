@@ -19,7 +19,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       vsync: this,
     );
 
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+    _animation = Tween<double>(begin: 1.0, end: 4.0).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
     _controller.forward();
 
     Timer(Duration(seconds: 3), () {
@@ -39,16 +42,17 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: Colors.white,
       body: Center(
-        child: FadeTransition(
-          opacity: _animation,
+        child: ScaleTransition(
+          scale: _animation,
           child: Text(
             'Scrapcon',
             style: TextStyle(
               fontSize: 36,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Color(0xFF17255A),
+              fontFamily: 'Pacifico',
             ),
           ),
         ),
