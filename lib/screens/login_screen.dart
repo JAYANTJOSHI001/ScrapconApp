@@ -1,22 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dart:convert';
+import 'onboarding_screen.dart';
 
 class LoginScreen extends StatelessWidget {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _login(BuildContext context) async {
+    final url = '${dotenv.env['BACKEND_URL']}/api/users/login';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'email': _emailController.text,
+        'password': _passwordController.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final token = data['token'];
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => OnboardingScreen()),
+      );
+    } else {
+      print('Login failed: ${response.body}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          // "Sign In" Heading with Top Padding
           Padding(
             padding: EdgeInsets.only(top: 100),
             child: Text(
               'Sign In',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.black, // Black text color
-              ),
-              textAlign: TextAlign.center, // Center align the text
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
           ),
           Expanded(
@@ -24,50 +49,28 @@ class LoginScreen extends StatelessWidget {
               padding: EdgeInsets.all(16.0),
               child: ListView(
                 children: [
-                  // Email Address Field
                   TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Email Address',
-                      border: OutlineInputBorder(),
-                    ),
+                    controller: _emailController,
+                    decoration: InputDecoration(labelText: 'Email Address', border: OutlineInputBorder()),
                   ),
                   SizedBox(height: 10),
-                  // Password Field
                   TextField(
+                    controller: _passwordController,
                     obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
+                    decoration: InputDecoration(labelText: 'Password', border: OutlineInputBorder()),
                   ),
                   SizedBox(height: 20),
-                  SizedBox(height: 20),
-                  // Sign In Button
                   ElevatedButton(
-                    onPressed: () {
-                      // Add your sign-in logic here
-                    },
+                    onPressed: () => _login(context),
                     child: Text('Sign In'),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      textStyle: TextStyle(fontSize: 18),
-                      backgroundColor: Color(0xFF17255A), // Button color
-                      foregroundColor: Colors.white, // Text color
-                    ),
+                    style: ElevatedButton.styleFrom(padding: EdgeInsets.symmetric(vertical: 15)),
                   ),
                   SizedBox(height: 10),
-                  // Forgot Password Link
                   TextButton(
                     onPressed: () {
                       // Add forgot password logic here
                     },
-                    child: Text(
-                      'Forgot Password?',
-                      style: TextStyle(
-                        color: Colors.blueAccent,
-                        fontSize: 16,
-                      ),
-                    ),
+                    child: Text('Forgot Password?'),
                   ),
                 ],
               ),

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dart:convert';
+import 'onboarding_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -6,37 +10,47 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  bool _keepSignedIn = false;
-  bool _acceptTerms = false;
-  bool _acceptPrivacy = false;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _signup() async {
+    final url = '${dotenv.env['BACKEND_URL']}/api/users/register';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'email': _emailController.text,
+        'name': _nameController.text,
+        'phone': _phoneController.text,
+        'password': _passwordController.text,
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      final data = json.decode(response.body);
+      final token = data['token']; 
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => OnboardingScreen()),
+      );
+    } else {
+      print('Signup failed: ${response.body}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          // Blue Background with Rounded Bottom Corners
-          // Container(
-          //   decoration: BoxDecoration(
-          //     color: Color(0xFF6B93CA), // Blue background
-          //     borderRadius: BorderRadius.only(
-          //       bottomLeft: Radius.circular(30),
-          //       bottomRight: Radius.circular(30),
-          //     ),
-          //   ),
-          //   padding: EdgeInsets.only(top: 50, bottom: 50), // Add padding for spacing
-          // ),
-  
           Padding(
             padding: EdgeInsets.only(top: 100),
             child: Text(
               'Create your Account',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.black, 
-              ),
-              textAlign: TextAlign.center, 
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
           ),
           Expanded(
@@ -45,97 +59,31 @@ class _SignupScreenState extends State<SignupScreen> {
               child: ListView(
                 children: [
                   TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Email Address',
-                      border: OutlineInputBorder(),
-                    ),
+                    controller: _emailController,
+                    decoration: InputDecoration(labelText: 'Email Address', border: OutlineInputBorder()),
                   ),
                   SizedBox(height: 10),
                   TextField(
-                    decoration: InputDecoration(
-                      labelText: 'First Name',
-                      border: OutlineInputBorder(),
-                    ),
+                    controller: _nameController,
+                    decoration: InputDecoration(labelText: 'Name', border: OutlineInputBorder()),
                   ),
                   SizedBox(height: 10),
                   TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Last Name',
-                      border: OutlineInputBorder(),
-                    ),
+                    controller: _phoneController,
+                    decoration: InputDecoration(labelText: 'Mobile Number', border: OutlineInputBorder()),
                   ),
                   SizedBox(height: 10),
                   TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Mobile Number',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
+                    controller: _passwordController,
                     obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _keepSignedIn,
-                        onChanged: (bool? val) {
-                          setState(() {
-                            _keepSignedIn = val!;
-                          });
-                        },
-                        activeColor: Colors.green,
-                      ),
-                      Expanded(child: Text('Keep me signed in')),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _acceptTerms,
-                        onChanged: (bool? val) {
-                          setState(() {
-                            _acceptTerms = val!;
-                          });
-                        },
-                        activeColor: Colors.green,
-                      ),
-                      Expanded(child: Text('I accept all Terms & Conditions')),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _acceptPrivacy,
-                        onChanged: (bool? val) {
-                          setState(() {
-                            _acceptPrivacy = val!;
-                          });
-                        },
-                        activeColor: Colors.green,
-                      ),
-                      Expanded(child: Text('I accept Privacy Policy')),
-                    ],
+                    decoration: InputDecoration(labelText: 'Password', border: OutlineInputBorder()),
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
-                      // Add your account creation logic here
-                    },
+                    onPressed: _signup,
                     child: Text('Create Account'),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      textStyle: TextStyle(fontSize: 18),
-                      backgroundColor: Color(0xFF17255A),
-                      foregroundColor: Colors.white,
-                    ),
+                    style: ElevatedButton.styleFrom(padding: EdgeInsets.symmetric(vertical: 15)),
                   ),
-                  SizedBox(height: 10),
                 ],
               ),
             ),
