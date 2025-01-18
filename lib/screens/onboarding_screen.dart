@@ -47,7 +47,7 @@ class OnboardingScreen extends StatelessWidget {
                 width: 450,
               ),
             ),
-            SizedBox(height: 150),
+            SizedBox(height: 100),
             Text(
               "What’s your Location?",
               style: TextStyle(
