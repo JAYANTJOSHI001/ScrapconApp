@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'onboarding_screen.dart';
+import 'passwords.dart'; // Import the passwords.dart file
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> _signup() async {
-    final url = '${dotenv.env['BACKEND_URL']}/api/users/register';
+    final url = '${Passwords.backendUrl}/api/users/register'; // Use the constant
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},

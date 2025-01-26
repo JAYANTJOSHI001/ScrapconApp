@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'onboarding_screen.dart';
+import 'passwords.dart'; // Import the passwords.dart file
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> _login(BuildContext context) async {
-    final url = '${dotenv.env['BACKEND_URL']}/api/users/login';
+    final url = '${Passwords.backendUrl}/api/users/login'; // Use the constant
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
