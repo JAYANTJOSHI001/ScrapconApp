@@ -24,7 +24,9 @@ class LoginScreen extends StatelessWidget {
       final token = data['token'];
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => OnboardingScreen()),
+        MaterialPageRoute(
+          builder: (context) => OnboardingScreen(),
+        ),
       );
     } else {
       print('Login failed: ${response.body}');

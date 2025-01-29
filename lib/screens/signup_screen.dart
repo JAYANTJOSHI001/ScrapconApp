@@ -33,7 +33,9 @@ class _SignupScreenState extends State<SignupScreen> {
       final token = data['token']; 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => OnboardingScreen()),
+        MaterialPageRoute(
+          builder: (context) => OnboardingScreen(), 
+        ),
       );
     } else {
       print('Signup failed: ${response.body}');

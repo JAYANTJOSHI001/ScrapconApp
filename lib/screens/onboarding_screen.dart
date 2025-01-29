@@ -1,7 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'passwords.dart'; // Import the passwords.dart file
+import 'notifications_screen.dart'; // Import the NotificationsScreen
 
 class OnboardingScreen extends StatelessWidget {
+  Future<void> _showNearbyScrapers() async {
+    try {
+      final response = await http.get(
+        Uri.parse('${Passwords.backendUrl}/api/nearby-vendors'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer your_token_here', // Replace with actual token
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        // Handle the data as needed
+        print('Nearby vendors: ${data['vendors']}');
+      } else {
+        print('Failed to load nearby vendors: ${response.body}');
+      }
+    } catch (error) {
+      print('Error fetching nearby vendors: $error');
+    }
+  }
+
+  Future<void> _searchByZipOrAddress() async {
+    // Implement the logic to search by zip or address
+    // This could involve showing a dialog to enter the zip/address
+    // and then sending a request to your backend
+  }
+
+  void _navigateToNotifications(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => NotificationsScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,13 +82,13 @@ class OnboardingScreen extends StatelessWidget {
             Center(
               child: SvgPicture.asset(
                 'assets/home.svg', // Replace with your SVG path
-                height: 450,
-                width: 450,
+                height: 350,
+                width: 350,
               ),
             ),
             SizedBox(height: 150),
             Text(
-              "What’s your Location?",
+              "What's your Location?",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -62,7 +101,8 @@ class OnboardingScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle "Show nearby scrapers" action
+                  _showNearbyScrapers();
+                  _navigateToNotifications(context); // Redirect to Notifications
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF17255A),
@@ -83,7 +123,8 @@ class OnboardingScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: OutlinedButton(
                 onPressed: () {
-                  // Handle "Search by Zip or Address" action
+                  _searchByZipOrAddress();
+                  _navigateToNotifications(context); // Redirect to Notifications
                 },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: Colors.black),
