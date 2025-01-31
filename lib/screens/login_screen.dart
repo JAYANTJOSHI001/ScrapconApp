@@ -8,6 +8,8 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  LoginScreen({super.key});
+
   Future<void> _login(BuildContext context) async {
     final url = '${Passwords.backendUrl}/api/users/login'; // Use the constant
     final response = await http.post(
@@ -23,6 +25,7 @@ class LoginScreen extends StatelessWidget {
       final data = json.decode(response.body);
       final token = data['token'];
       Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(
           builder: (context) => OnboardingScreen(),
@@ -64,8 +67,8 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () => _login(context),
-                    child: Text('Sign In'),
                     style: ElevatedButton.styleFrom(padding: EdgeInsets.symmetric(vertical: 15)),
+                    child: Text('Sign In'),
                   ),
                   SizedBox(height: 10),
                   TextButton(
