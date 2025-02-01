@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'passwords.dart'; // Import the passwords.dart file
+import 'passwords.dart'; 
 import 'notifications_screen.dart'; // Import the NotificationsScreen
 
 class OnboardingScreen extends StatelessWidget {
   Future<void> _showNearbyScrapers() async {
     try {
       final response = await http.get(
-        Uri.parse('${Passwords.backendUrl}/api/nearby-vendors'),
+        Uri.parse('${Passwords.backendUrl}/api/nearby'),
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer your_token_here', // Replace with actual token
+          'Content-Type': 'application/json'
         },
       );
 
