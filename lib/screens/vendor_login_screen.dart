@@ -4,14 +4,14 @@ import 'dart:convert';
 import 'onboarding_screen.dart';
 import 'passwords.dart'; // Import the passwords.dart file
 
-class LoginScreen extends StatelessWidget {
+class VendorLoginScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  LoginScreen({super.key});
+  VendorLoginScreen({super.key});
 
-  Future<void> _login(BuildContext context) async {
-    final url = '${Passwords.backendUrl}/api/users/login'; // Use the constant
+  Future<void> _loginAsVendor(BuildContext context) async {
+    final url = '${Passwords.backendUrl}/api/vendors/login'; // Use the constant
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
@@ -32,7 +32,7 @@ class LoginScreen extends StatelessWidget {
         ),
       );
     } else {
-      print('Login failed: ${response.body}');
+      print('Vendor login failed: ${response.body}');
     }
   }
 
@@ -42,10 +42,10 @@ class LoginScreen extends StatelessWidget {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 100, bottom: 50),
+            padding: EdgeInsets.only(top: 100),
             child: Text(
-              'Sign In',
-              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+              'Vendor Sign In',
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ),
@@ -66,14 +66,9 @@ class LoginScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () => _login(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF17255A),
-                      foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 100),
-                      textStyle: TextStyle(fontSize: 18),
-                    ),
-                    child: Text('Sign In'),
+                    onPressed: () => _loginAsVendor(context),
+                    style: ElevatedButton.styleFrom(padding: EdgeInsets.symmetric(vertical: 15)),
+                    child: Text('Sign In as Vendor'),
                   ),
                   SizedBox(height: 10),
                   TextButton(
@@ -90,4 +85,4 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
-}
+} 
