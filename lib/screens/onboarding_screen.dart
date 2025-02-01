@@ -3,8 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'passwords.dart'; 
-import 'notifications_screen.dart'; // Import the NotificationsScreen
-
+import 'notifications_screen.dart';
+// import 'dashboard_screen.dart';
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
@@ -14,7 +14,7 @@ class OnboardingScreen extends StatelessWidget {
         Uri.parse('${Passwords.backendUrl}/api/nearby'),
         headers: {
           'Content-Type': 'application/json'
-        },
+        },  
       );
 
       if (response.statusCode == 200) {
@@ -35,10 +35,10 @@ class OnboardingScreen extends StatelessWidget {
     // and then sending a request to your backend
   }
 
-  void _navigateToDashboard(BuildContext context) {
+  void _navigateToNotifications(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => DashboardScreen()),
+      MaterialPageRoute(builder: (context) => NotificationsScreen()),
     );
   }
 
@@ -103,7 +103,7 @@ class OnboardingScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   _showNearbyScrapers();
-                  _navigateToDashboard(context); // Redirect to Notifications
+                  _navigateToNotifications(context); // Redirect to Notifications
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF17255A),
@@ -125,7 +125,7 @@ class OnboardingScreen extends StatelessWidget {
               child: OutlinedButton(
                 onPressed: () {
                   _searchByZipOrAddress();
-                  _navigateToDashboard(context); // Redirect to Notifications
+                  _navigateToNotifications(context); // Redirect to Notifications
                 },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: Colors.black),
