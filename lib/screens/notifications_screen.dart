@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'dashboard_screen.dart'; // Import the DashboardScreen
+import 'user_screens/dashboard_screen.dart'; // Import the DashboardScreen
 
 class NotificationsScreen extends StatelessWidget {
   @override

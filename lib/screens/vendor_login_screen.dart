@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'onboarding_screen.dart';
 import 'passwords.dart'; // Import the passwords.dart file
+import 'vendor_screens/dashboard_screen.dart'; 
 
 class VendorLoginScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -28,7 +28,7 @@ class VendorLoginScreen extends StatelessWidget {
         // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(
-          builder: (context) => OnboardingScreen(),
+          builder: (context) => VendorDashboardScreen(), // Redirect to VendorDashboardScreen
         ),
       );
     } else {
