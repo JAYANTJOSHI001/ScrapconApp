@@ -5,6 +5,8 @@ import 'onboarding_screen.dart';
 import 'passwords.dart'; // Import the passwords.dart file
 
 class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
   @override
   _SignupScreenState createState() => _SignupScreenState();
 }

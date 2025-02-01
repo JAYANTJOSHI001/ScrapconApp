@@ -6,6 +6,8 @@ import 'passwords.dart';
 import 'notifications_screen.dart'; // Import the NotificationsScreen
 
 class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({super.key});
+
   Future<void> _showNearbyScrapers() async {
     try {
       final response = await http.get(
@@ -33,10 +35,10 @@ class OnboardingScreen extends StatelessWidget {
     // and then sending a request to your backend
   }
 
-  void _navigateToNotifications(BuildContext context) {
+  void _navigateToDashboard(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => NotificationsScreen()),
+      MaterialPageRoute(builder: (context) => DashboardScreen()),
     );
   }
 
@@ -101,7 +103,7 @@ class OnboardingScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   _showNearbyScrapers();
-                  _navigateToNotifications(context); // Redirect to Notifications
+                  _navigateToDashboard(context); // Redirect to Notifications
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF17255A),
@@ -123,7 +125,7 @@ class OnboardingScreen extends StatelessWidget {
               child: OutlinedButton(
                 onPressed: () {
                   _searchByZipOrAddress();
-                  _navigateToNotifications(context); // Redirect to Notifications
+                  _navigateToDashboard(context); // Redirect to Notifications
                 },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: Colors.black),
