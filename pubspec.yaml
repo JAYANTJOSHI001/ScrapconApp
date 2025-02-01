@@ -64,6 +64,7 @@ flutter:
   assets:
       - assets/splash_svg.svg
       - assets/home.svg
+      - assets/notification.svg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
